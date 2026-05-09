@@ -1,0 +1,22 @@
+# --- Security & Environment ---
+# Ignore all .yml and .properties files if they contain secrets (DB passwords, API keys)
+*.properties
+.env
+
+# --- Java/Maven/Gradle Build Files ---
+target/
+build/
+out/
+*.class
+*.jar
+*.war
+
+# --- IDE Settings (IntelliJ/Eclipse) ---
+.idea/
+*.iml
+.project
+.settings/
+.classpath
+
+# --- Logs ---
+*.log

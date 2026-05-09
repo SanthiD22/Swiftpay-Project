@@ -1,0 +1,16 @@
+name: swiftpay-identity-stack
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: swiftpay-identity-db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: swiftpay_auth
+    ports:
+      - "5433:5432"
+    volumes:
+      - identity_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  identity_postgres_data:

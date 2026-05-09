@@ -1,0 +1,36 @@
+services:
+  zookeeper:
+    image: zookeeper:3.9.2 # Stable official image
+    ports:
+      - "2181:2181"
+    environment:
+      Z00_MY_ID: 1
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1  # Most reliable Confluent-community image
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    depends_on:
+      - zookeeper
+
+
+  mongodb:
+    image: mongo:latest
+    container_name: swiftpay-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+
+volumes:
+  mongo_data:
+
+

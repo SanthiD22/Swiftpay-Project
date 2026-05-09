@@ -1,0 +1,28 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true # Automatically creates routes based on Eureka service names
+      routes:
+        - id: identity-service
+          uri: lb://IDENTITY-SERVICE # "lb" means Load Balanced via Eureka
+          predicates:
+            - Path=/auth/**
+
+        - id: wallet-service
+          uri: lb://WALLET-SERVICE
+          predicates:
+            - Path=/wallet/**
+          filters:
+            - AuthenticationFilter  # This attaches our "Bouncer" to the wallet routes
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://service-registry:8761/eureka/

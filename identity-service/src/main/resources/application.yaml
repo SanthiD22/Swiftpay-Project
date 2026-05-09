@@ -1,0 +1,42 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: identity-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/swiftpay_auth
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  flyway:
+    enabled: true
+
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      # Keys are usually strings (the ID of the message)
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # Values are our UserCreatedEvent object, converted to JSON
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: "userCreated:com.project.identity_service.dto.UserCreatedEvent"
+
+jwt:
+  secret:
+     key: ${JWT_SECRET_KEY}
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
